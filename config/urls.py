@@ -15,6 +15,7 @@ def version(request):
 
 
 urlpatterns = [
+    path(f"{settings.ADMIN_URL}doc/", include("django.contrib.admindocs.urls")),
     path(settings.ADMIN_URL, admin.site.urls),
     path("apis/version/", version, name="version"),
     path("version.txt", VersionView.as_view()),
@@ -35,6 +36,7 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += [
+        path("__debug__/", include("debug_toolbar.urls")),
         path("__reload__/", include("django_browser_reload.urls")),
     ]
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

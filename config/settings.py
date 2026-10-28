@@ -38,6 +38,7 @@ CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
 
 INSTALLED_APPS = [
     "django.contrib.admin",
+    "django.contrib.admindocs",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.messages",
@@ -72,6 +73,15 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
+
+# Debug Toolbar (DEV only) — active solely when DEBUG is True, so it disappears
+# automatically once DJANGO_DEBUG=false. The SHOW_TOOLBAR_CALLBACK returns True
+# whenever DEBUG is on, regardless of client IP, so the toolbar renders over the
+# WireGuard VPN without maintaining an INTERNAL_IPS list.
+if DEBUG:
+    INSTALLED_APPS += ["debug_toolbar"]
+    MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
+    DEBUG_TOOLBAR_CONFIG = {"SHOW_TOOLBAR_CALLBACK": lambda request: True}
 
 ROOT_URLCONF = "config.urls"
 
